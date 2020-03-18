@@ -25,7 +25,7 @@ class peoplefrom extends Command {
             }
         }
 
-        if (found < 1) {
+        if (found < 0) {
             let matches = [stringSimilarity.findBestMatch(college, colleges).bestMatch.target]
             let similar = stringSimilarity.findBestMatch(college, colleges).ratings;
             for (var i = 0; i < similar.length; i++) {
