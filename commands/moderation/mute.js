@@ -23,13 +23,13 @@ class mute extends Command {
       var reason = args.splice(mutee.length).join(" ");
       var user = bot.users.cache.get(mutee[k].id);
       var guild = msg.guild;
-      var member = msg.guild.members.get(mutee[k].id);
+      var member = msg.guild.members.cache.get(mutee[k].id);
 
       if (member.hasPermission("ADMINISTRATOR")) {
         return msg.channel.send("I can't mute " + user + "!");
       }
 
-      await member.roles.add("516758098556354585");
+      await member.roles.add("689688059872018518");
 
       msg.reply("<@" + member + "> has been muted.");
 

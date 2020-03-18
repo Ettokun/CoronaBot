@@ -19,13 +19,13 @@ class unmute extends Command {
       var reason = args.splice(mutee.length).join(" ");
       var user = bot.users.cache.get(mutee[k].id);
       var guild = msg.guild;
-      var member = msg.guild.members.get(mutee[k].id);
+      var member = msg.guild.members.cache.get(mutee[k].id);
 
       if (member.hasPermission("ADMINISTRATOR")) {
         return msg.channel.send("I can't unmute " + user + "!");
       }
 
-      await member.roles.remove("516758098556354585");
+      await member.roles.remove("689688059872018518");
 
       msg.reply("<@" + member + "> has been unmuted.");
 
@@ -41,7 +41,7 @@ class unmute extends Command {
         .setFooter(`${guild.name}`, `${guild.iconURL()}`)
         .setTimestamp();
       try {
-        msg.guild.channels.cache.get("517258075636367362").send({ embed: mute });
+        msg.guild.channels.cache.find(channel => channel.name === "mod-logs").send({ embed: mute });
       } catch (e) {
         msg.channel.send({ embed: mute });
       }

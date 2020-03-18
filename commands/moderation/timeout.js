@@ -32,9 +32,8 @@ class timeout extends Command {
             .then(msg2 => {
               setTimeout(() => {
                 msg2.edit("**The timeout period has elapsed.**");
-                msg2.channel.overwritePermissions({
-                  permissionOverwrites: currentOverwrites,
-                  reason: "Channel Timeout"
+                msg2.channel.updateOverwrite(id, {
+                  SEND_MESSAGES: null
                 });
               }, time * 1000);
             })
