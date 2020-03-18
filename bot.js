@@ -10,7 +10,8 @@ const { ReqlDriverError } = require("rethinkdbdash");
 const { Client, Collection } = require("discord.js"),
   path = require("path"),
   klaw = require("klaw"),
-  Database = require("./util/Database");
+  Database = require("./util/Database"),
+  GoogleSearch = require("google-search");
 
 class CoronaBot extends Client {
   constructor(options) {
@@ -24,6 +25,16 @@ class CoronaBot extends Client {
     this.events = new Collection();
     this.aliases = new Collection();
     this.ratelimits = new Collection();
+
+    this.apis = {
+      fetch: require("node-fetch"),
+      google: new GoogleSearch({
+        key: this.config.APIKeys.GoogleKey,
+        cx: this.config.APIKeys.GoogleCx
+      }),
+      subredditPic: require("random-puppy"),
+      imdb: require("imdb-api"),
+    }
 
     // Initializes bot database
     this.database = new Database(

@@ -19,12 +19,12 @@ class blackjack extends Command {
 
   drawCard(cards) {
     let i = Math.floor(Math.random() * cards.length)
-    return cards.splice(i , 1)[0];
+    return cards.splice(i, 1)[0];
   }
 
   calculateTotal(hand) {
     let total = 0;
-    for (var i = 0; i < hand.length; i++){
+    for (var i = 0; i < hand.length; i++) {
       if (hand[i] == "J" || hand[i] == "Q" || hand[i] == "K") {
         total += 10
       } else if (hand[i] == "A") {
@@ -33,8 +33,8 @@ class blackjack extends Command {
         total += hand[i]
       }
     }
-    
-    for (var i = 0; i < hand.length; i++){
+
+    for (var i = 0; i < hand.length; i++) {
       if (hand[i] == "A" && total > 21) {
         total -= 10
       }
@@ -42,7 +42,7 @@ class blackjack extends Command {
     return total;
   }
 
-  beepboop(players_hand, cpus_hand, cards){
+  beepboop(players_hand, cpus_hand, cards) {
     let players_total = this.calculateTotal(players_hand);
     while (this.calculateTotal(cpus_hand) <= players_total && this.calculateTotal(cpus_hand) < 21) {
       cpus_hand.push(this.drawCard(cards));
@@ -61,15 +61,15 @@ class blackjack extends Command {
   async run(bot, msg, args, level) {
     var amount;
     var cards = [
-        "A",2,3,4,5,6,7,8,9,10,"J","Q","K",
-        "A",2,3,4,5,6,7,8,9,10,"J","Q","K",
-        "A",2,3,4,5,6,7,8,9,10,"J","Q","K",
-        "A",2,3,4,5,6,7,8,9,10,"J","Q","K"
-      ];
+      "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
+      "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
+      "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
+      "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"
+    ];
     var players_hand = [];
     var cpus_hand = [];
     var timeout = true;
-    
+
     if (args[0] && isNaN(args[0])) amount = 10;
     else if (args[0] && !isNaN(args[0]) && Number(args[0]) > 0) amount = Number(args[0]);
     else amount = 10;
@@ -96,9 +96,9 @@ class blackjack extends Command {
     let blackjackMessage = await msg.channel.send({
       embed: {
         title: "** Blackjack Bid Amount:** " + amount + " credits",
-        description: "Dealer's card: " + cpus_hand + 
-          "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand + 
-          "\n" + "Please react ✌ to hit and 🖐 to stay" ,
+        description: "Dealer's card: " + cpus_hand +
+          "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+          "\n" + "Please react ✌ to hit and 🖐 to stay",
         footer: {
           text: bot.user.username + " Blackjack",
           iconURL: bot.user.avatarURL()
@@ -106,23 +106,24 @@ class blackjack extends Command {
         timestamp: new Date()
       }
     })
-    .then(message => {
-      message.react("✌")
-      message.react("🖐")
-      return message; 
-    });
+      .then(message => {
+        message.react("✌")
+        message.react("🖐")
+        return message;
+      });
 
     let filter = (reaction, user) => (reaction.emoji.name === '✌' || reaction.emoji.name === "🖐") && user.id === msg.author.id;
-    let collector = blackjackMessage.createReactionCollector(filter, {time: 1000 * 3 * 60})
+    let collector = blackjackMessage.createReactionCollector(filter, { time: 1000 * 3 * 60 })
     collector.on("collect", messageReaction => {
       if (messageReaction.emoji.name === "🖐") {
         if (this.beepboop(players_hand, cpus_hand, cards)) {
-          blackjackMessage.edit({embed: 
+          blackjackMessage.edit({
+            embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "Dealer's card: " + cpus_hand + 
-              "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand + 
-              "\n" + "Dealer has busted, You win " + 2 * amount + " credits",
+              description: "Dealer's card: " + cpus_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+                "\n" + "Dealer has busted, You win " + 2 * amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
                 iconURL: bot.user.avatarURL()
@@ -132,19 +133,20 @@ class blackjack extends Command {
           });
           bot.database.update(
             "users",
-              {
-                balance: account.balance + amount,
-                id: msg.author.id
-              },
-              bot.logger
-            );
+            {
+              balance: account.balance + amount,
+              id: msg.author.id
+            },
+            bot.logger
+          );
         } else {
-          blackjackMessage.edit({embed: 
+          blackjackMessage.edit({
+            embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "Dealer's card: " + cpus_hand + 
-              "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand + 
-              "\n" + "Dealer has won, You lost " + amount + " credits",
+              description: "Dealer's card: " + cpus_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+                "\n" + "Dealer has won, You lost " + amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
                 iconURL: bot.user.avatarURL()
@@ -158,11 +160,12 @@ class blackjack extends Command {
       } else if (messageReaction.emoji.name === "✌") {
         players_hand.push(this.drawCard(cards));
         if (this.calculateTotal(players_hand) > 21) {
-          blackjackMessage.edit({embed: 
+          blackjackMessage.edit({
+            embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "<@" + msg.author.id + "> busted! " + players_hand + 
-              "\n" + "You lost " + amount + " credits",
+              description: "<@" + msg.author.id + "> busted! " + players_hand +
+                "\n" + "You lost " + amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
                 iconURL: bot.user.avatarURL()
@@ -173,12 +176,13 @@ class blackjack extends Command {
           timeout = false;
           collector.stop();
         } else {
-          blackjackMessage.edit({embed: 
+          blackjackMessage.edit({
+            embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "Dealer's card: " + cpus_hand + 
-              "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand + 
-              "\n" + "Please react ✌ to hit and 🖐 to stay",
+              description: "Dealer's card: " + cpus_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+                "\n" + "Please react ✌ to hit and 🖐 to stay",
               footer: {
                 text: bot.user.username + " Blackjack",
                 iconURL: bot.user.avatarURL()
@@ -188,12 +192,13 @@ class blackjack extends Command {
           });
         }
       }
-      let me = messageReaction.users.filter(user => user.username == msg.author.username).first();
+      let me = messageReaction.users.cache.filter(user => user.username == msg.author.username).first();
       messageReaction.users.remove(me);
     })
     collector.on("end", collected => {
       if (timeout) {
-        blackjackMessage.edit({embed: 
+        blackjackMessage.edit({
+          embed:
           {
             title: "**Blackjack Bid Amount:** " + amount + " credits",
             description: "You took too long and forfit the match",
