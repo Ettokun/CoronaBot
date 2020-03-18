@@ -45,7 +45,7 @@ class peoplefrom extends Command {
         let desc = "";
 
         collegePeeps.forEach(user => {
-            desc += bot.users.cache.get(user.id).tag + "\n";
+            desc += bot.users.cache.get(user.id) ? bot.users.cache.get(user.id).tag + "\n" : "";
         });
 
         desc += "-----\n**Total: " + collegePeeps.length + "**";
