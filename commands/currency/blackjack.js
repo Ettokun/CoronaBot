@@ -11,10 +11,10 @@ class blackjack extends Command {
     });
   }
 
-  restart(players_hand, cpus_hand, cards) {
-    players_hand.push(this.drawCard(cards));
-    cpus_hand.push(this.drawCard(cards));
-    players_hand.push(this.drawCard(cards));
+  restart(player_hand, cpu_hand, cards) {
+    player_hand.push(this.drawCard(cards));
+    cpu_hand.push(this.drawCard(cards));
+    player_hand.push(this.drawCard(cards));
   }
 
   drawCard(cards) {
@@ -82,8 +82,8 @@ class blackjack extends Command {
       "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
       "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"
     ];
-    var players_hand = [];
-    var cpus_hand = [];
+    var player_hand = [];
+    var cpu_hand = [];
     var timeout = true;
 
     if (args[0] && isNaN(args[0])) amount = 10;
@@ -107,13 +107,13 @@ class blackjack extends Command {
       bot.logger
     );
 
-    this.restart(players_hand, cpus_hand, cards)
+    this.restart(player_hand, cpu_hand, cards)
 
     let blackjackMessage = await msg.channel.send({
       embed: {
         title: "** Blackjack Bid Amount:** " + amount + " credits",
-        description: "Dealer's card: " + cpus_hand +
-          "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+        description: "Dealer's card: " + cpu_hand +
+          "\n؜" + "<@" + msg.author.id + ">'s cards: " + player_hand +
           "\n" + "Please react ✌ to hit and 🖐 to stay",
         footer: {
           text: bot.user.username + " Blackjack",
@@ -138,8 +138,8 @@ class blackjack extends Command {
             embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "Dealer's card: " + cpus_hand +
-                "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+              description: "Dealer's card: " + cpu_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + player_hand +
                 "\n" + "Dealer has busted, You win " + 2 * amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
@@ -162,8 +162,8 @@ class blackjack extends Command {
             embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "Dealer's card: " + cpus_hand +
-                "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+              description: "Dealer's card: " + cpu_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + player_hand +
                 "\n" + "Dealer wins, You lose " + amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
@@ -186,8 +186,8 @@ class blackjack extends Command {
             embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "Dealer's card: " + cpus_hand +
-                "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+              description: "Dealer's card: " + cpu_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + player_hand +
                 "\n" + "Dealer has busted, You win back your " + amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
@@ -211,13 +211,13 @@ class blackjack extends Command {
         timeout = false;
         collector.stop();
       } else if (messageReaction.emoji.name === "✌") {
-        players_hand.push(this.drawCard(cards));
-        if (this.calculateTotal(players_hand) > 21) {
+        player_hand.push(this.drawCard(cards));
+        if (this.calculateTotal(player_hand) > 21) {
           blackjackMessage.edit({
             embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "<@" + msg.author.id + "> busted! " + players_hand +
+              description: "<@" + msg.author.id + "> busted! " + player_hand +
                 "\n" + "You lost " + amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
@@ -233,8 +233,8 @@ class blackjack extends Command {
             embed:
             {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
-              description: "Dealer's card: " + cpus_hand +
-                "\n؜" + "<@" + msg.author.id + ">'s cards: " + players_hand +
+              description: "Dealer's card: " + cpu_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + player_hand +
                 "\n" + "Please react ✌ to hit and 🖐 to stay",
               footer: {
                 text: bot.user.username + " Blackjack",
