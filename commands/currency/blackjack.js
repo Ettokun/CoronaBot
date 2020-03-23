@@ -188,7 +188,7 @@ class blackjack extends Command {
               title: "**Blackjack Bid Amount:** " + amount + " credits",
               description: "Dealer's card: " + cpu_hand +
                 "\n؜" + "<@" + msg.author.id + ">'s cards: " + player_hand +
-                "\n" + "Dealer has busted, You win back your " + amount + " credits",
+                "\n" + "Push! You win back your " + amount + " credits",
               footer: {
                 text: bot.user.username + " Blackjack",
                 iconURL: bot.user.avatarURL()
