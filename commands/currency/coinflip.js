@@ -24,7 +24,7 @@ class coinflip extends Command {
     let account = (await bot.database.users.get(msg.author.id)) || {};
     if (!account || !account.balance)
       return msg.reply(
-        "you do not have an account yet! Please claim your dalies to setup an account!"
+        "your balance is 0! Please claim your dailies if you are able to do so to play!"
       );
     if (account.balance < amount)
       return msg.reply("you don't have enough money to cover that bet!");
