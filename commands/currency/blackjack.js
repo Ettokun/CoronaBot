@@ -196,6 +196,14 @@ class blackjack extends Command {
               timestamp: new Date()
             }
           });
+          bot.database.update(
+            "users",
+            {
+              balance: account.balance,
+              id: msg.author.id
+            },
+            bot.logger
+          );
           /**
            * account has no change due to push
           bot.database.update(
