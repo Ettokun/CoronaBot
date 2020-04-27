@@ -43,12 +43,12 @@ class blackjack extends Command {
   }
 
   calculateWinner(player_hand, cpu_hand, cards) {
-    //dealer draw - attempt to beat player
-    let player_total = this.calculateTotal(player_hand);
-    while (this.calculateTotal(cpu_hand) < player_total && this.calculateTotal(cpu_hand) < 21) {
+    //dealer draw - stand on 17
+    while (this.calculateTotal(cpu_hand) < 17) {
       cpu_hand.push(this.drawCard(cards));
     }
     let cpu_total = this.calculateTotal(cpu_hand);
+    let player_total = this.calculateTotal(player_hand);
 
     /**
      * note that some of the outcomes represented below are unused but kept in the code architecture
@@ -67,7 +67,7 @@ class blackjack extends Command {
       if (cpu_total > player_total) {
         return 1; //on dealer win
       } else if (cpu_total < player_total) {
-        return 3; //unused; on player win
+        return 3; //on player win
       } else if (cpu_total == player_total) {
         return 4; //on push
       }
@@ -176,6 +176,30 @@ class blackjack extends Command {
             "users",
             {
               balance: account.balance - amount,
+              id: msg.author.id
+            },
+            bot.logger
+          );
+        } else if (this.calculateWinner(player_hand, cpu_hand, cards) == 3) {
+          //dealer win
+          blackjackMessage.edit({
+            embed:
+            {
+              title: "**Blackjack Bid Amount:** " + amount + " credits",
+              description: "Dealer's card: " + cpu_hand +
+                "\n؜" + "<@" + msg.author.id + ">'s cards: " + player_hand +
+                "\n" + "Player wins, You win " + 2 * amount + " credits",
+              footer: {
+                text: bot.user.username + " Blackjack",
+                iconURL: bot.user.avatarURL()
+              },
+              timestamp: new Date()
+            }
+          });
+          bot.database.update(
+            "users",
+            {
+              balance: account.balance + amount,
               id: msg.author.id
             },
             bot.logger
