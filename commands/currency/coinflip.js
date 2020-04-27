@@ -24,7 +24,7 @@ class coinflip extends Command {
     let account = (await bot.database.users.get(msg.author.id)) || {};
     if (!account || !account.balance)
       return msg.reply(
-        "you do not have an account yet! Please claim your dalies to setup an account!"
+        "your balance is 0! Please claim your dailies if you are able to do so to play!"
       );
     if (account.balance < amount)
       return msg.reply("you don't have enough money to cover that bet!");
@@ -36,61 +36,61 @@ class coinflip extends Command {
         embed
           .setTitle("** Coin Flip Bid Amount:** " + amount + " credits")
           .setAuthor(msg.author.username, msg.author.avatarURL())
-          .setDescription("Its Heads\nYou won " + Math.ceil(amount * 0.1) + " credits");
+          .setDescription("**Heads!**\nYou won " + Math.ceil(amount * 0.1) + " credits");
         bot.database.update(
           "users",
-            {
-              balance: account.balance + Math.ceil(amount * 0.1),
-              id: msg.author.id
-            },
+          {
+            balance: account.balance + Math.ceil(amount * 0.1),
+            id: msg.author.id
+          },
           bot.logger
         );
       } else {
         embed
           .setTitle("** Coin Flip Bid Amount:** " + amount + " credits")
           .setAuthor(msg.author.username, msg.author.avatarURL())
-          .setDescription("Its Tails\nYou didn't win anything :(");
-          bot.database.update(
-            "users",
-              {
-                balance: account.balance - amount,
-                id: msg.author.id
-              },
-            bot.logger
-          );
+          .setDescription("**Tails!**\nYou didn't win anything :(");
+        bot.database.update(
+          "users",
+          {
+            balance: account.balance - amount,
+            id: msg.author.id
+          },
+          bot.logger
+        );
       }
-    } else if (args[0] == "t" || args[0] == "tails" || args[0] == "tail"){
+    } else if (args[0] == "t" || args[0] == "tails" || args[0] == "tail") {
       if (i == 1) {
         embed
           .setTitle("** Coin Flip Bid Amount:** " + amount + " credits")
           .setAuthor(msg.author.username, msg.author.avatarURL())
-          .setDescription("Its Tails\nYou won " + Math.ceil(amount * 0.1) + " credits");
+          .setDescription("**Tails!**\nYou won " + Math.ceil(amount * 0.1) + " credits");
         bot.database.update(
           "users",
-            {
-              balance: account.balance + Math.ceil(amount * 0.1),
-              id: msg.author.id
-            },
+          {
+            balance: account.balance + Math.ceil(amount * 0.1),
+            id: msg.author.id
+          },
           bot.logger
         );
       } else {
         embed
           .setTitle("** Coin Flip Bid Amount:** " + amount + " credits")
           .setAuthor(msg.author.username, msg.author.avatarURL())
-          .setDescription("Its Heads\nYou didn't win anything :(");
-          bot.database.update(
-            "users",
-              {
-                balance: account.balance - amount,
-                id: msg.author.id
-              },
-            bot.logger
-          );
+          .setDescription("**Heads!**\nYou didn't win anything :(");
+        bot.database.update(
+          "users",
+          {
+            balance: account.balance - amount,
+            id: msg.author.id
+          },
+          bot.logger
+        );
       }
     } else {
       return msg.reply("please enter a heads or tails /cf <h or t> <bet amount>");
     }
-    return msg.channel.send({embed: embed})
+    return msg.channel.send({ embed: embed })
   }
 }
 

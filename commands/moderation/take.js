@@ -59,7 +59,6 @@ class take extends Command {
                 m.user.username +
                 "."
               );
-
             });
         }
       }

@@ -16,7 +16,7 @@ class balance extends Command {
     if (dbUser.balance) {
       msg.reply("your current balance is " + dbUser.balance + " credits!");
     } else {
-      msg.reply("you do not have an account setup yet!");
+      msg.reply("your balance is 0! Please claim your dailies if you are able to do so to play!");
     }
   }
 }
